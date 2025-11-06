@@ -1,90 +1,99 @@
 package com.project.back_end.DTO;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 public class AppointmentDTO {
-// 1. 'id' field:
-//    - Type: private Long
-//    - Description:
-//      - Represents the unique identifier for the appointment.
-//      - This is the primary key for identifying the appointment in the system.
 
-// 2. 'doctorId' field:
-//    - Type: private Long
-//    - Description:
-//      - Represents the ID of the doctor associated with the appointment.
-//      - This is a simplified field, capturing only the ID of the doctor (not the full Doctor object).
+    // Fields
+    private Long id;             // Unique identifier for the appointment
+    private Long doctorId;       // ID of the doctor
+    private String doctorName;   // Full name of the doctor
+    private Long patientId;      // ID of the patient
+    private String patientName;  // Full name of the patient
+    private String patientEmail; // Email of the patient
+    private String patientPhone; // Contact number of the patient
+    private String patientAddress; // Residential address of the patient
+    private LocalDateTime appointmentTime; // Date and time of the appointment
+    private int status;          // Status of the appointment (e.g., scheduled, completed)
 
-// 3. 'doctorName' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the name of the doctor associated with the appointment.
-//      - This is a simplified field for displaying the doctor's name.
+    // Derived fields
+    private LocalDate appointmentDate;  // Extracted date from appointmentTime
+    private LocalTime appointmentTimeOnly;  // Extracted time from appointmentTime
+    private LocalDateTime endTime;     // Calculated end time (appointmentTime + 1 hour)
 
-// 4. 'patientId' field:
-//    - Type: private Long
-//    - Description:
-//      - Represents the ID of the patient associated with the appointment.
-//      - This is a simplified field, capturing only the ID of the patient (not the full Patient object).
+    // Constructor to initialize all core fields and calculate derived fields
+    public AppointmentDTO(Long id, Long doctorId, String doctorName, Long patientId,
+                          String patientName, String patientEmail, String patientPhone,
+                          String patientAddress, LocalDateTime appointmentTime, int status) {
+        this.id = id;
+        this.doctorId = doctorId;
+        this.doctorName = doctorName;
+        this.patientId = patientId;
+        this.patientName = patientName;
+        this.patientEmail = patientEmail;
+        this.patientPhone = patientPhone;
+        this.patientAddress = patientAddress;
+        this.appointmentTime = appointmentTime;
+        this.status = status;
 
-// 5. 'patientName' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the name of the patient associated with the appointment.
-//      - This is a simplified field for displaying the patient's name.
+        // Compute the derived fields
+        this.appointmentDate = appointmentTime.toLocalDate();    // Extract date from appointmentTime
+        this.appointmentTimeOnly = appointmentTime.toLocalTime(); // Extract time from appointmentTime
+        this.endTime = appointmentTime.plusHours(1);              // End time is appointment time + 1 hour
+    }
 
-// 6. 'patientEmail' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the email of the patient associated with the appointment.
-//      - This is a simplified field for displaying the patient's email.
+    // Getters for all fields
+    public Long getId() {
+        return id;
+    }
 
-// 7. 'patientPhone' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the phone number of the patient associated with the appointment.
-//      - This is a simplified field for displaying the patient's phone number.
+    public Long getDoctorId() {
+        return doctorId;
+    }
 
-// 8. 'patientAddress' field:
-//    - Type: private String
-//    - Description:
-//      - Represents the address of the patient associated with the appointment.
-//      - This is a simplified field for displaying the patient's address.
+    public String getDoctorName() {
+        return doctorName;
+    }
 
-// 9. 'appointmentTime' field:
-//    - Type: private LocalDateTime
-//    - Description:
-//      - Represents the scheduled date and time of the appointment.
-//      - The time when the appointment is supposed to happen, stored as a LocalDateTime object.
+    public Long getPatientId() {
+        return patientId;
+    }
 
-// 10. 'status' field:
-//    - Type: private int
-//    - Description:
-//      - Represents the status of the appointment.
-//      - Status can indicate if the appointment is "Scheduled:0", "Completed:1", or other statuses (e.g., "Canceled") as needed.
+    public String getPatientName() {
+        return patientName;
+    }
 
-// 11. 'appointmentDate' field (Custom Getter):
-//    - Type: private LocalDate
-//    - Description:
-//      - A derived field representing only the date part of the appointment (without the time).
-//      - Extracted from the 'appointmentTime' field.
+    public String getPatientEmail() {
+        return patientEmail;
+    }
 
-// 12. 'appointmentTimeOnly' field (Custom Getter):
-//    - Type: private LocalTime
-//    - Description:
-//      - A derived field representing only the time part of the appointment (without the date).
-//      - Extracted from the 'appointmentTime' field.
+    public String getPatientPhone() {
+        return patientPhone;
+    }
 
-// 13. 'endTime' field (Custom Getter):
-//    - Type: private LocalDateTime
-//    - Description:
-//      - A derived field representing the end time of the appointment.
-//      - Calculated by adding 1 hour to the 'appointmentTime' field.
+    public String getPatientAddress() {
+        return patientAddress;
+    }
 
-// 14. Constructor:
-//    - The constructor accepts all the relevant fields for the AppointmentDTO, including simplified fields for the doctor and patient (ID, name, etc.).
-//    - It also calculates custom fields: 'appointmentDate', 'appointmentTimeOnly', and 'endTime' based on the 'appointmentTime' field.
+    public LocalDateTime getAppointmentTime() {
+        return appointmentTime;
+    }
 
-// 15. Getters:
-//    - Standard getter methods are provided for all fields: id, doctorId, doctorName, patientId, patientName, patientEmail, patientPhone, patientAddress, appointmentTime, status, appointmentDate, appointmentTimeOnly, and endTime.
-//    - These methods allow access to the values of the fields in the AppointmentDTO object.
+    public int getStatus() {
+        return status;
+    }
 
+    public LocalDate getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public LocalTime getAppointmentTimeOnly() {
+        return appointmentTimeOnly;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
 }

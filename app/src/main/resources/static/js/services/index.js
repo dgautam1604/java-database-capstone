@@ -1,58 +1,117 @@
-/*
-  Import the openModal function to handle showing login popups/modals
-  Import the base API URL from the config file
-  Define constants for the admin and doctor login API endpoints using the base URL
+// Importing necessary modules
+import { openModal } from '../components/modals.js';  // Modal handling function
+import { API_BASE_URL } from '../config/config.js';    // Base URL for API
 
-  Use the window.onload event to ensure DOM elements are available after page load
-  Inside this function:
-    - Select the "adminLogin" and "doctorLogin" buttons using getElementById
-    - If the admin login button exists:
-        - Add a click event listener that calls openModal('adminLogin') to show the admin login modal
-    - If the doctor login button exists:
-        - Add a click event listener that calls openModal('doctorLogin') to show the doctor login modal
+// Define API Endpoints
+const ADMIN_API = API_BASE_URL + '/admin';
+const DOCTOR_API = API_BASE_URL + '/doctor/login';
 
+// Setup button event listeners after the window is loaded
+window.onload = function () {
+    // Select buttons by their ID attributes
+    const adminBtn = document.getElementById('adminLogin');
+    const doctorBtn = document.getElementById('doctorLogin');
 
-  Define a function named adminLoginHandler on the global window object
-  This function will be triggered when the admin submits their login credentials
+    // If the admin login button exists, attach a click event to show the admin login modal
+    if (adminBtn) {
+        adminBtn.addEventListener('click', () => {
+            openModal('adminLogin');  // Open the admin login modal
+        });
+    }
 
-  Step 1: Get the entered username and password from the input fields
-  Step 2: Create an admin object with these credentials
+    // If the doctor login button exists, attach a click event to show the doctor login modal
+    if (doctorBtn) {
+        doctorBtn.addEventListener('click', () => {
+            openModal('doctorLogin');  // Open the doctor login modal
+        });
+    }
+};
 
-  Step 3: Use fetch() to send a POST request to the ADMIN_API endpoint
-    - Set method to POST
-    - Add headers with 'Content-Type: application/json'
-    - Convert the admin object to JSON and send in the body
+// Admin Login Handler - Asynchronous function to handle Admin login logic
+window.adminLoginHandler = async function () {
+    // Get the values entered for username and password
+    const username = document.getElementById('adminUsername').value;
+    const password = document.getElementById('adminPassword').value;
 
-  Step 4: If the response is successful:
-    - Parse the JSON response to get the token
-    - Store the token in localStorage
-    - Call selectRole('admin') to proceed with admin-specific behavior
+    // Create an admin object with the provided credentials
+    const admin = { username, password };
 
-  Step 5: If login fails or credentials are invalid:
-    - Show an alert with an error message
+    try {
+        // Sending POST request to the Admin API
+        const response = await fetch(ADMIN_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(admin),
+        });
 
-  Step 6: Wrap everything in a try-catch to handle network or server errors
-    - Show a generic error message if something goes wrong
+        // Check if the login was successful
+        if (response.ok) {
+            // Parse the response to get the token
+            const data = await response.json();
 
+            // Store the token in localStorage
+            localStorage.setItem('token', data.token);
 
-  Define a function named doctorLoginHandler on the global window object
-  This function will be triggered when a doctor submits their login credentials
+            // Call selectRole function to save the selected role in localStorage and render the appropriate page
+            selectRole('admin');
+        } else {
+            // If login fails, show an alert with an error message
+            alert('Invalid credentials!');
+        }
+    } catch (error) {
+        // Handle any unexpected issues or network errors
+        console.error('Error during admin login:', error);
+        alert('Something went wrong! Please try again later.');
+    }
+};
 
-  Step 1: Get the entered email and password from the input fields
-  Step 2: Create a doctor object with these credentials
+// Doctor Login Handler - Asynchronous function to handle Doctor login logic
+window.doctorLoginHandler = async function () {
+    // Get the values entered for email and password
+    const email = document.getElementById('doctorEmail').value;
+    const password = document.getElementById('doctorPassword').value;
 
-  Step 3: Use fetch() to send a POST request to the DOCTOR_API endpoint
-    - Include headers and request body similar to admin login
+    // Create a doctor object with the provided credentials
+    const doctor = { email, password };
 
-  Step 4: If login is successful:
-    - Parse the JSON response to get the token
-    - Store the token in localStorage
-    - Call selectRole('doctor') to proceed with doctor-specific behavior
+    try {
+        // Sending POST request to the Doctor API
+        const response = await fetch(DOCTOR_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(doctor),
+        });
 
-  Step 5: If login fails:
-    - Show an alert for invalid credentials
+        // Check if the login was successful
+        if (response.ok) {
+            // Parse the response to get the token
+            const data = await response.json();
 
-  Step 6: Wrap in a try-catch block to handle errors gracefully
-    - Log the error to the console
-    - Show a generic error message
-*/
+            // Store the token in localStorage
+            localStorage.setItem('token', data.token);
+
+            // Call selectRole function to save the selected role in localStorage and render the appropriate page
+            selectRole('doctor');
+        } else {
+            // If login fails, show an alert with an error message
+            alert('Invalid credentials!');
+        }
+    } catch (error) {
+        // Handle any unexpected issues or network errors
+        console.error('Error during doctor login:', error);
+        alert('Something went wrong! Please try again later.');
+    }
+};
+
+// The selectRole function is assumed to be in another script like render.js to handle page rendering
+function selectRole(role) {
+    // Store the selected role in localStorage
+    localStorage.setItem('role', role);
+
+    // Render the appropriate page or redirect based on the role
+    if (role === 'admin') {
+        window.location.href = '/admin-dashboard'; // Navigate to admin dashboard
+    } else if (role === 'doctor') {
+        window.location.href = '/doctor-dashboard'; // Navigate to doctor dashboard
+    }
+}

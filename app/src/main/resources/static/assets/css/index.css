@@ -1,53 +1,68 @@
-/* this is the style sheet file for index.htlm  */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-/* 
-**Global Reset (`*`)**
+html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
 
-* Remove all default margin and padding.
-* Use `border-box` for sizing to include padding and border in element size.
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
 
-**Base (`html, body`)**
+.wrapper {
+    text-align: center;
+}
 
-* Set height to 100% for full viewport layout.
-* Use the `'Roboto'` sans-serif font for modern, clean typography.
+h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
 
-**Layout Wrapper (`.wrapper`)**
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 1.2rem;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-* Use a vertical flexbox layout.
-* Ensure the wrapper covers at least the full height of the screen (`min-height: 100vh`).
+button:hover {
+    background-color: #0056b3;
+}
 
-**Heading (`h2`)**
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
 
-* Set a large font size (`48px`) for prominence.
-* Add a bottom margin of `50px` for spacing.
-* Use a dark teal color (`#003e3e`).
-* Make the font bold and use a blended font stack (`'Alegreya', 'Roboto', sans-serif`) for elegant styling.
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
 
-**Main Section (`.main-content`)**
-
-* Allow the section to grow to fill space with `flex-grow: 1`.
-* Add `40px` of internal padding.
-* Center content both horizontally and vertically using `justify-content` and `align-items`.
-* Display items in a column direction.
-* Center all text.
-* Apply a full-screen background image with:
-
-  * `cover` size
-  * `center` positioning
-  * no repeat
-  * `fixed` attachment to keep image still during scroll
-
-**Buttons (`button`)**
-
-* Style with a teal green background (`#015c5d`) and white text.
-* Remove borders and round the corners (`12px`).
-* Use `10px 20px` padding and set width to `200px`.
-* Add a top margin of `10px` for spacing.
-* Enable pointer cursor and readable font size (`16px`).
-* On hover, change background color to bold red (`#A62B1F`).
-
-**Dashboard Buttons (`.dashboard-btn`)**
-
-* Use the same base green background (`#015c5d`) as the default button.
-* On hover, darken the background to deep teal (`#003e3e`) for visual feedback.
- */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
